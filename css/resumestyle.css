@@ -12,11 +12,10 @@ body {
     font-size: 14px; 
 }
 
-/* === MAIN LAYOUT CHANGE: FLEXBOX === */
 .resume-container {
-    display: flex; /* Changed from grid */
-    flex-direction: row; /* Ensures side-by-side layout */
-    align-items: stretch; /* Ensures both columns are equal height */
+    display: flex; 
+    flex-direction: row; 
+    align-items: stretch; 
     max-width: 900px; 
     margin: 30px auto;
     background-color: #fff;
@@ -24,23 +23,19 @@ body {
     min-height: 1050px; 
 }
 
-/* === SIDEBAR: Fixed 32% Width === */
 .left-sidebar {
-    flex: 0 0 32%; /* Don't grow, don't shrink, stay at 32% */
+    flex: 0 0 32%;
     background-color: #3E2723; 
     color: #FFF8E1;
     padding: 35px 25px;
     text-align: left;
 }
 
-/* === MAIN CONTENT: Fills remaining space === */
 .right-content {
-    flex: 1; /* Grow to fill the rest (approx 68%) */
+    flex: 1; 
     padding: 40px;
     background-color: #fff;
 }
-
-/* === REST OF THE STYLING (IDENTICAL TO ORIGINAL) === */
 
 .profile-img-container {
     text-align: center;
@@ -215,7 +210,6 @@ body {
         margin: 0;
         box-shadow: none;
         min-height: auto;
-        /* Ensure Flexbox print works well */
         display: block; 
     }
     
@@ -239,4 +233,5 @@ body {
         flex: none;
         width: 100%;
     }
+
 }
