@@ -112,7 +112,7 @@ function setupFormListener() {
         console.log("Contact form found! Listening for submit...");
 
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); 
+            event.preventDefault(); // Stop the standard reload
 
             const emailVal = document.getElementById('email').value;
             const messageVal = document.getElementById('message').value;
@@ -124,37 +124,36 @@ function setupFormListener() {
                 return;
             }
 
-            const submitTime = Date.now();
-            const timeDifference = (submitTime - formLoadTime) / 1000; 
-            if (timeDifference < 2) {
-                alert("Submission too fast! You might be a bot.");
-                return;
-            }
+            console.log("Validation passed. Sending to Web3Forms...");
+            
+            const formData = new FormData(form);
 
-            const spamKeywords = ["free money", "buy now", "click here", "subscribe", "promo"];
-            const lowerCaseMessage = messageVal.toLowerCase();
-            const foundSpam = spamKeywords.some(keyword => lowerCaseMessage.includes(keyword));
-
-            if (foundSpam) {
-                alert("Spam detected: Your message contains blocked keywords.");
-                return;
-            }
-
-            console.log("Validation passed. Simulating success for Lab Screenshot...");
-
-            const contactContainer = document.querySelector('.contact-form');
-            contactContainer.innerHTML = `
-                <div style="text-align: center; padding: 50px; color: #2ecc71;">
-                    <h2 style="font-size: 2.5rem; margin-bottom: 10px;">✅ Success!</h2>
-                    <p style="font-size: 1.2rem; color: #555;">Thank you, <strong>${nameVal}</strong>.</p>
-                    <p>Your message has been sent securely.</p>
-                    <div style="margin-top: 30px; padding: 15px; background: #f0fdf4; border: 1px solid #2ecc71; display: inline-block; border-radius: 8px;">
-                        <strong>Status:</strong> Sent to ${emailVal}
-                    </div>
-                    <br><br>
-                    <button onclick="location.reload()" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Send Another</button>
-                </div>
-            `;
+            fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            })
+            .then(async (response) => {
+                if (response.status === 200) {
+                    const contactContainer = document.querySelector('.contact-form');
+                    contactContainer.innerHTML = `
+                        <div style="text-align: center; padding: 50px; color: #2ecc71;">
+                            <h2 style="font-size: 2.5rem; margin-bottom: 10px;">✅ Message Sent!</h2>
+                            <p style="font-size: 1.2rem; color: #555;">Thank you, <strong>${nameVal}</strong>.</p>
+                            <p>We received your email successfully.</p>
+                            <br>
+                            <button onclick="location.reload()" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Send Another</button>
+                        </div>
+                    `;
+                    console.log("Success message displayed.");
+                } else {
+                    console.log("Error response", response);
+                    alert("Something went wrong. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.log("Network Error:", error);
+                alert("Network Error: Your connection might be blocking this form.");
+            });
         });
     }
 }
