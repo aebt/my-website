@@ -123,7 +123,7 @@ function setupFormListener() {
                 return;
             }
 
-            // time based spam filter
+            //time-based spam filter
             const submitTime = Date.now();
             const timeDifference = (submitTime - formLoadTime) / 1000; // Convert to seconds
 
@@ -147,6 +147,7 @@ function setupFormListener() {
             }
 
             console.log("Validation passed. Sending to FormSubmit...");
+            event.target.submit();
         });
     }
 }
