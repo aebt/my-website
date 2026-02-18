@@ -3,9 +3,7 @@ console.log("App.js has loaded!");
 document.addEventListener('DOMContentLoaded', () => {
     initClock();
     setGreeting();
-    
     setupFormListener();
-
     initWorksAnimation();
 });
 
@@ -105,16 +103,50 @@ function setGreeting() {
     }
 }
 
+const formLoadTime = Date.now();
+
 function setupFormListener() {
     const form = document.getElementById('contactForm');
+
     if (form) {
+        console.log("Contact form found! Listening for submit...");
+
         form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const n = document.getElementById('fullName')?.value;
-            const e = document.getElementById('email')?.value;
-            const m = document.getElementById('message')?.value;
-            console.log("--- Form Data ---", n, e, m);
-            alert("Form submitted! Check Console.");
+
+            const emailVal = document.getElementById('email').value;
+            const messageVal = document.getElementById('message').value;
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailVal)) {
+                alert("Please enter a valid email address.");
+                event.preventDefault(); // Stop submission
+                return;
+            }
+
+            // time based spam filter
+            const submitTime = Date.now();
+            const timeDifference = (submitTime - formLoadTime) / 1000; // Convert to seconds
+
+            if (timeDifference < 2) {
+                alert("Submission too fast! You might be a bot.");
+                event.preventDefault(); 
+                return;
+            }
+
+            // keyword detection spam filter
+            const spamKeywords = ["free money", "buy now", "click here", "subscribe", "promo"];
+            const lowerCaseMessage = messageVal.toLowerCase();
+            
+            // Check if the message contains any spam words
+            const foundSpam = spamKeywords.some(keyword => lowerCaseMessage.includes(keyword));
+
+            if (foundSpam) {
+                alert("Spam detected: Your message contains blocked keywords.");
+                event.preventDefault(); // Stop submission
+                return;
+            }
+
+            console.log("Validation passed. Sending to FormSubmit...");
         });
     }
 }
