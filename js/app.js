@@ -112,18 +112,40 @@ function setupFormListener() {
         console.log("Contact form found! Listening for submit...");
 
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Stop the standard reload
+            event.preventDefault(); // Stop default reload
 
             const emailVal = document.getElementById('email').value;
             const messageVal = document.getElementById('message').value;
             const nameVal = document.getElementById('fullName').value; 
 
+            // --- 1. EMAIL VALIDATION ---
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(emailVal)) {
                 alert("Please enter a valid email address.");
                 return;
             }
 
+            // --- 2. TIME-BASED SPAM FILTER (The "Bot" Check) ---
+            const submitTime = Date.now();
+            const timeDifference = (submitTime - formLoadTime) / 1000; 
+            
+            // If submitted in less than 2 seconds, it's a bot
+            if (timeDifference < 2) {
+                alert("Submission too fast! You might be a bot.");
+                return;
+            }
+
+            // --- 3. KEYWORD SPAM FILTER (The "Scam" Check) ---
+            const spamKeywords = ["free money", "buy now", "click here", "subscribe", "promo"];
+            const lowerCaseMessage = messageVal.toLowerCase();
+            const foundSpam = spamKeywords.some(keyword => lowerCaseMessage.includes(keyword));
+
+            if (foundSpam) {
+                alert("Spam detected: Your message contains blocked keywords.");
+                return;
+            }
+
+            // --- 4. IF ALL CHECKS PASS, SEND TO WEB3FORMS ---
             console.log("Validation passed. Sending to Web3Forms...");
             
             const formData = new FormData(form);
@@ -144,7 +166,6 @@ function setupFormListener() {
                             <button onclick="location.reload()" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Send Another</button>
                         </div>
                     `;
-                    console.log("Success message displayed.");
                 } else {
                     console.log("Error response", response);
                     alert("Something went wrong. Please try again.");
