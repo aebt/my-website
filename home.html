@@ -15,15 +15,11 @@
 
     <div class="contact-form">
         <h3>Send me a message</h3>
-        <form action="https://formsubmit.co/andretechico@gmail.com" method="POST" id="contactForm">
-            
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_subject" value="New Portfolio Message">
-
+        <form action="https://api.web3forms.com/submit" method="POST" id="contactForm">
+            <input type="hidden" name="access_key" value="0b86744b-f806-4ee4-b58e-74bbff05d8c2">
             <input type="text" id="fullName" name="name" placeholder="Your Name" required>
             <input type="email" id="email" name="email" placeholder="Your Email" required>
             <textarea id="message" name="message" rows="4" placeholder="Your Message" required></textarea>
-            
             <button type="submit">Send Message</button>
         </form>
     </div>
@@ -32,4 +28,3 @@
 
 </body>
 </html>
-
