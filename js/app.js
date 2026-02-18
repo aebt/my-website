@@ -119,35 +119,29 @@ function setupFormListener() {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(emailVal)) {
                 alert("Please enter a valid email address.");
-                event.preventDefault(); // Stop submission
+                event.preventDefault(); // STOP the form
                 return;
             }
 
-            //time-based spam filter
             const submitTime = Date.now();
-            const timeDifference = (submitTime - formLoadTime) / 1000; // Convert to seconds
-
+            const timeDifference = (submitTime - formLoadTime) / 1000; 
             if (timeDifference < 2) {
                 alert("Submission too fast! You might be a bot.");
-                event.preventDefault(); 
+                event.preventDefault(); // STOP the form
                 return;
             }
 
-            // keyword detection spam filter
             const spamKeywords = ["free money", "buy now", "click here", "subscribe", "promo"];
             const lowerCaseMessage = messageVal.toLowerCase();
-            
-            // Check if the message contains any spam words
             const foundSpam = spamKeywords.some(keyword => lowerCaseMessage.includes(keyword));
 
             if (foundSpam) {
                 alert("Spam detected: Your message contains blocked keywords.");
-                event.preventDefault(); // Stop submission
+                event.preventDefault(); // STOP the form
                 return;
             }
 
-            console.log("Validation passed. Sending to FormSubmit...");
-            event.target.submit();
+            console.log("Validation passed. Browser is sending data...");
         });
     }
 }
