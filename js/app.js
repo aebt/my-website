@@ -118,14 +118,14 @@ function setupFormListener() {
             const messageVal = document.getElementById('message').value;
             const nameVal = document.getElementById('fullName').value; 
 
-            // --- 1. EMAIL VALIDATION ---
+            // email validation
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(emailVal)) {
                 alert("Please enter a valid email address.");
                 return;
             }
 
-            // --- 2. TIME-BASED SPAM FILTER (The "Bot" Check) ---
+            // time-based spam filter
             const submitTime = Date.now();
             const timeDifference = (submitTime - formLoadTime) / 1000; 
             
@@ -135,7 +135,7 @@ function setupFormListener() {
                 return;
             }
 
-            // --- 3. KEYWORD SPAM FILTER (The "Scam" Check) ---
+            // keyword detection spam filter
             const spamKeywords = ["free money", "buy now", "click here", "subscribe", "promo"];
             const lowerCaseMessage = messageVal.toLowerCase();
             const foundSpam = spamKeywords.some(keyword => lowerCaseMessage.includes(keyword));
@@ -145,7 +145,7 @@ function setupFormListener() {
                 return;
             }
 
-            // --- 4. IF ALL CHECKS PASS, SEND TO WEB3FORMS ---
+            // if all checks pass, send to web3forms
             console.log("Validation passed. Sending to Web3Forms...");
             
             const formData = new FormData(form);
@@ -178,3 +178,4 @@ function setupFormListener() {
         });
     }
 }
+
