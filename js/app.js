@@ -130,7 +130,7 @@ function setupFormListener() {
             const timeDifference = (submitTime - formLoadTime) / 1000; 
             
             // If submitted in less than 2 seconds, it's a bot
-            if (timeDifference < 2) {
+            if (timeDifference < 20) {
                 alert("Submission too fast! You might be a bot.");
                 return;
             }
@@ -178,4 +178,5 @@ function setupFormListener() {
         });
     }
 }
+
 
